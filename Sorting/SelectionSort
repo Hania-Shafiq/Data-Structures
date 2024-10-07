@@ -1,0 +1,36 @@
+// selection sort
+// Time Complexity: O(n^2)
+//Auxiliary Space Complexity: O(1)
+
+#include<iostream>
+using namespace std;
+int main(){
+    cout<<"Input the size of array: ";
+    int n;
+    cin>>n;
+     int array[n];
+    cout<<"Input array elements: ";
+    
+    //array input
+    for(int i=0;i<n;i++){
+        cin>>array[i];
+    }
+    
+    //applying selection sort logic
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            if (array[i]<array[j]){
+                int temp=array[i];
+                array[i]=array[j];
+                array[j]=temp;
+            }
+        }
+    }
+    
+    //printing the sorted array
+    cout<<"SORTED ARRAY:\n";
+    for(int i=0;i<n;i++){
+        cout<<+array[i]<<" ";
+    }
+    return 0;
+}
