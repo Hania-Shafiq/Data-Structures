@@ -1,0 +1,138 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Function to calculate the 1D index in row-major order for n-dimensional arrays
+int calculateIndex(const vector<int>& indices, const vector<int>& dimensions) {
+    int index = 0;
+    int multiplier = 1;
+    for (int i = dimensions.size() - 1; i >= 0; i--) {
+        index += indices[i] * multiplier;
+        multiplier *= dimensions[i];
+    }
+    return index;
+}
+
+// Function to print the array in row-major order with gap
+void printArray(const int* arr, const vector<int>& dimensions) {
+    int totalSize = 1;
+    for (int dim : dimensions) totalSize *= dim;
+    
+    vector<int> indices(dimensions.size());
+    int dimCount = dimensions.size();
+    
+    for (int i = 0; i < totalSize; i++) {
+        int temp = i;
+        for (int d = dimCount - 1; d >= 0; d--) {
+            indices[d] = temp % dimensions[d];
+            temp /= dimensions[d];
+        }
+
+        // Printing the element with format
+        cout << arr[i] << " ";
+
+        // Adding a line break when we've printed one "row" of the last dimension
+        if ((i + 1) % dimensions[dimCount - 1] == 0) {
+            cout << endl;
+        }
+        
+        // Adding a gap of 2 rows between layers
+        if ((i + 1) % (dimensions[dimCount - 1] * 2) == 0) {
+            cout << endl;
+        }
+    }
+}
+
+// Main function
+int main() {
+    int n;
+    cout << "Enter the number of dimensions: ";
+    cin >> n;
+
+    // Getting the original dimensions
+    vector<int> oldDimensions(n);
+    cout << "Enter each dimension's size for the original array:\n";
+    for (int i = 0; i < n; i++) {
+        cout << "Dimension " << i + 1 << ": ";
+        cin >> oldDimensions[i];
+    }
+
+    // Calculating the total size of the original array
+    int oldSize = 1;
+    for (int dim : oldDimensions) oldSize *= dim;
+
+    // Dynamically allocating the original array
+    int* arr = new int[oldSize];
+
+    // Filling the original array with values
+    cout << "Enter elements for the original array:\n";
+    vector<int> indices(n);
+    for (int i = 0; i < oldSize; i++) {
+        // Converting 1D index back to n-dimensional indices
+        int temp = i;
+        for (int d = n - 1; d >= 0; d--) {
+            indices[d] = temp % oldDimensions[d];
+            temp /= oldDimensions[d];
+        }
+        // Inputting element at the calculated index
+        cout << "Element at ";
+        for (int idx : indices) cout << "[" << idx << "]";
+        cout << ": ";
+        cin >> arr[i];
+    }
+
+    // Displaying the old array in row-major order with gaps
+    cout << "\nOld Array in Row-Major Order with Gap:\n";
+    printArray(arr, oldDimensions);
+
+    // Getting new dimensions
+    vector<int> newDimensions(n);
+    cout << "\nEnter each dimension's size for the new array:\n";
+    for (int i = 0; i < n; i++) {
+        cout << "Dimension " << i + 1 << ": ";
+        cin >> newDimensions[i];
+    }
+
+    // Calculating the total size of the new array
+    int newSize = 1;
+    for (int dim : newDimensions) newSize *= dim;
+
+    // Dynamically allocating the new array
+    int* newArr = new int[newSize]();
+
+    // Copying elements from the old array to the new array
+    for (int i = 0; i < oldSize; i++) {
+        // Converting 1D index back to n-dimensional indices for copying
+        int temp = i;
+        for (int d = n - 1; d >= 0; d--) {
+            indices[d] = temp % oldDimensions[d];
+            temp /= oldDimensions[d];
+        }
+
+        // Checking if indices are within the new dimensions
+        bool withinBounds = true;
+        for (int d = 0; d < n; d++) {
+            if (indices[d] >= newDimensions[d]) {
+                withinBounds = false;
+                break;
+            }
+        }
+
+        // Copy only if within bounds
+        if (withinBounds) {
+            int newIndex = calculateIndex(indices, newDimensions);
+            newArr[newIndex] = arr[i];
+        }
+    }
+
+    // Displaying the new array in row-major order with gaps
+    cout << "\nNew Array in Row-Major Order with Gap:\n";
+    printArray(newArr, newDimensions);
+
+    // Freeing memory
+    delete[] arr;
+    delete[] newArr;
+
+    return 0;
+}
+
