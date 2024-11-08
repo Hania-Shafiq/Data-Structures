@@ -4,18 +4,19 @@ void shellSort(int arr[], int n) {
     // Start with a large gap, then reduce the gap
     for (int gap = n / 2; gap >= 1; gap /= 2) {
         // Perform a gapped insertion sort for this gap size
-    for(int i=1;i<n;i++){ //unsorted part
-        int current=arr[i];
-        int j=i-1; //sorted part
-        while(arr[j]>current && j>=0){
-            arr[j+1]=arr[j];
-            j--;
+        for (int j = gap; j < n; j++) {
+            // Shift elements of arr[0..j-gap] that are greater than arr[j]
+            // to one position ahead of their current position
+            for (int i = j - gap; i >= 0; i -= gap) {
+                if (arr[i + gap] > arr[i]) {
+                    break;
+                } else {
+                    std::swap(arr[i + gap], arr[i]);
+                }
+            }
         }
-        arr[j+1]=current;
     }
 }
-    }
-
 
 int main() {
     int arr[] = {12, 34, 54, 2, 3};
