@@ -1,4 +1,5 @@
 #include <iostream>
+using namespace std;
 
 void shellSort(int arr[], int n) {
     // Start with a large gap, then reduce the gap
@@ -11,7 +12,7 @@ void shellSort(int arr[], int n) {
                 if (arr[i + gap] > arr[i]) {
                     break;
                 } else {
-                    std::swap(arr[i + gap], arr[i]);
+                    swap(arr[i + gap], arr[i]);
                 }
             }
         }
