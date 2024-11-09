@@ -25,11 +25,7 @@ int main() {
         for (int j = 0; j < V; j++) {
             int n;
             cin >> n;
-            if (n == 0 || n == 1) {
-                graph[i][j] = n;  // Corrected variable name from 'a' to 'graph'
-            } else {
-                graph[i][j] = 0;  // Assuming you want to initialize other elements to 0
-            }
+            graph[i][j] =n;
         }
         cout << endl;
     }
