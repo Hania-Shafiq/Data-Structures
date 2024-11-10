@@ -91,9 +91,15 @@ void printPostorder(Node* node){
     printPostorder(node->right);
     cout<<node->data<<" ";
 }
-
-
-
+void printdescendingorder(Node* node){
+    if(node==NULL){
+        return;
+    }
+    printdescendingorder(node->right);
+    cout<<node->data<<" ";
+    printdescendingorder(node->left);
+    
+}
 int main(){
     Node* root=new Node(50);
     cout<<"Binary Tree after insertions: \n";
@@ -105,7 +111,8 @@ int main(){
     cout<<"\nBinary Tree after deletion: \n";
     deleteNode(root,20);
     printInorder(root);
+    cout<<"\nDescending Order"<<endl;
+    printdescendingorder(root);
     return 0;
 }
-
 
